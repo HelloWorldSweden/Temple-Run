@@ -32,6 +32,7 @@ public class TurnZone : MonoBehaviour {
         if(Other.tag == "Player") {
             thePlayer = Other.gameObject.GetComponent<PlayerController>();
             hasCurrentPlayer = true;
+            hasDoneTurn = false;
         }
     }
 }

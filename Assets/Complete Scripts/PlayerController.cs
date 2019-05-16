@@ -9,14 +9,13 @@ public class PlayerController : MonoBehaviour {
     public float jumpSpeed = 8;
     public Animator theAnimator;
 
-    private bool isGrounded = false;
     private bool isGameOver = false;
 	
 	// Kod som körs varje updatering och som får spelaren att konstant springa framåt samt att kunna hoppa.
 	void Update () {
         if(isGameOver == false) {
             float yVelocity = theRigid.velocity.y;
-            if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+            if (Input.GetKeyDown(KeyCode.Space) && isGrounded())
                 yVelocity = jumpSpeed;
 
             theRigid.velocity = transform.forward * moveSpeed + new Vector3(0, yVelocity, 0);
@@ -34,6 +33,12 @@ public class PlayerController : MonoBehaviour {
     public void makeRightTurn() {transform.localEulerAngles += new Vector3(0, 90, 0);}
 
     // Kod som används för att kolla om spelaren står på marken eller inte
-    private void OnCollisionStay(Collision other) {isGrounded = true;}
-    private void OnCollisionExit(Collision other) {isGrounded = false;}
+    private bool isGrounded() {
+        RaycastHit hitInfo;
+        Ray r = new Ray();
+        if(Physics.Raycast(transform.position + new Vector3(0, 1, 0), Vector3.down, out hitInfo, 1.2f)) {
+            return true;
+        }
+        return false;
+    }
 }
